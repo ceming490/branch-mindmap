@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>関係図キャンバス</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="toolbar">
+  <div id="toolbar-title">関係図キャンバス</div>
+  <button id="btn-add-node">＋ ノード追加</button>
+  <div id="hint">ドラッグで移動／右下の丸をドラッグで接続／線にカーソルを合わせて×で削除／カードをタップで詳細</div>
+  <div id="save-indicator">保存済み</div>
+</div>
+
+<div id="canvas-wrap">
+  <div id="canvas">
+    <svg id="edge-layer"></svg>
+    <div id="node-layer"></div>
+  </div>
+</div>
+
+<div id="detail-overlay">
+  <div id="detail-panel">
+    <div id="detail-header">
+      <div id="detail-breadcrumb"></div>
+      <button id="detail-close">×</button>
+    </div>
+    <div id="detail-body">
+      <ul id="detail-list"></ul>
+      <div id="detail-add-row">
+        <input id="detail-add-input" type="text" placeholder="項目を追加...">
+        <button id="detail-add-btn">＋ 追加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
