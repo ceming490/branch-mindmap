@@ -4,7 +4,7 @@
 //
 // 未設定（下の値のまま）の場合は、今まで通りブラウザ内保存のみで動作します。
 
-firebaseConfig = {
+window.firebaseConfig = {
   apiKey: "AIzaSyBs2DIUvqs-lulF1tehCuqH6peM-Rr-3HE",
   authDomain: "branch-mindmap.firebaseapp.com",
   projectId: "branch-mindmap",
