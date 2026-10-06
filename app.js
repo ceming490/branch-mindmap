@@ -58,8 +58,83 @@ function scheduleSave() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    ind.textContent = '保存済み';
+    if (currentUser && cloudDb) {
+      cloudDb.collection('maps').doc(currentUser.uid).set(state)
+        .then(() => { ind.textContent = '保存済み（クラウド）'; })
+        .catch(() => { ind.textContent = '保存済み（ローカルのみ・通信エラー）'; });
+    } else {
+      ind.textContent = '保存済み';
+    }
   }, 300);
+}
+
+// ---------- ログイン（Firebase） ----------
+let currentUser = null;
+let cloudDb = null;
+let cloudAuth = null;
+
+function isFirebaseConfigured() {
+  return !!(window.firebaseConfig && window.firebaseConfig.apiKey && window.firebaseConfig.apiKey !== 'YOUR_API_KEY');
+}
+
+function initAuth() {
+  const loginBtn = document.getElementById('btn-login');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  if (!isFirebaseConfigured()) {
+    loginBtn.addEventListener('click', () => {
+      alert('ログイン機能を使うには、firebase-config.js に Firebase プロジェクトの設定を貼り付けてください。');
+    });
+    return;
+  }
+
+  firebase.initializeApp(window.firebaseConfig);
+  cloudAuth = firebase.auth();
+  cloudDb = firebase.firestore();
+
+  cloudAuth.onAuthStateChanged((user) => {
+    currentUser = user;
+    updateAuthUI();
+    if (user) loadFromCloud(user.uid);
+  });
+
+  loginBtn.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    cloudAuth.signInWithPopup(provider).catch((err) => {
+      alert('ログインに失敗しました: ' + err.message);
+    });
+  });
+  logoutBtn.addEventListener('click', () => {
+    cloudAuth.signOut();
+  });
+}
+
+function updateAuthUI() {
+  const loginBtn = document.getElementById('btn-login');
+  const userBadge = document.getElementById('user-badge');
+  if (currentUser) {
+    loginBtn.style.display = 'none';
+    userBadge.classList.add('show');
+    userBadge.querySelector('.user-name').textContent = currentUser.displayName || currentUser.email || '';
+  } else {
+    loginBtn.style.display = '';
+    userBadge.classList.remove('show');
+  }
+}
+
+async function loadFromCloud(uid) {
+  try {
+    const snap = await cloudDb.collection('maps').doc(uid).get();
+    if (snap.exists) {
+      const data = snap.data();
+      if (data && Array.isArray(data.nodes) && Array.isArray(data.edges)) {
+        state = data;
+      }
+    }
+  } catch (err) {
+    console.error('クラウドデータの読み込みに失敗しました', err);
+  }
+  renderAll();
 }
 
 // ---------- ノード描画・操作 ----------
@@ -452,6 +527,7 @@ function addDetailItem() {
 // ---------- 初期化 ----------
 function init() {
   renderAll();
+  initAuth();
 
   document.getElementById('btn-add-node').addEventListener('click', () => {
     const wrap = document.getElementById('canvas-wrap');

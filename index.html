@@ -16,6 +16,11 @@
   <button id="btn-add-node">＋ ノード追加</button>
   <div id="hint">ドラッグで移動／右下の丸をドラッグで接続／線にカーソルを合わせて×で削除／カードをタップで詳細</div>
   <div id="save-indicator">保存済み</div>
+  <button id="btn-login" title="Googleアカウントでログインしてクラウド保存">Googleでログイン</button>
+  <div id="user-badge">
+    <span class="user-name"></span>
+    <button id="btn-logout" title="ログアウト">ログアウト</button>
+  </div>
 </div>
 
 <div id="canvas-wrap">
@@ -41,6 +46,10 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

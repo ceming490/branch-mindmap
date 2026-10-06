@@ -78,6 +78,54 @@ html, body {
   transition: opacity 0.3s;
 }
 
+#btn-login {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 12px;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#btn-login:hover { background: #f2f2f2; }
+
+#user-badge {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+#user-badge.show { display: flex; }
+#user-badge .user-name {
+  font-size: 13px;
+  font-weight: 700;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#btn-logout {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 7px 10px;
+  background: #f2f2f2;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#btn-logout:hover { background: #e4e4e4; }
+
+@media (max-width: 480px) {
+  #user-badge .user-name { display: none; }
+}
+
 /* ---------- canvas ---------- */
 #canvas-wrap {
   position: absolute;
